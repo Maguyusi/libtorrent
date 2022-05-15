@@ -150,7 +150,9 @@ namespace aux {
 		announce_entry();
 		~announce_entry();
 		announce_entry(announce_entry const&);
+		announce_entry(announce_entry&&);
 		announce_entry& operator=(announce_entry const&) &;
+		announce_entry& operator=(announce_entry&&) &;
 
 		// tracker URL as it appeared in the torrent file
 		std::string url;
@@ -185,6 +187,7 @@ namespace aux {
 
 		// internal
 		announce_endpoint* find_endpoint(aux::listen_socket_handle const& s);
+		announce_endpoint const* find_endpoint(aux::listen_socket_handle const& s) const;
 	};
 
 }
