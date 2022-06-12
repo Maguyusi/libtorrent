@@ -171,7 +171,7 @@ TORRENT_VERSION_NAMESPACE_3
 	{
 		// internal
 		TORRENT_UNEXPORT tracker_alert(aux::stack_allocator& alloc, torrent_handle const& h
-			, tcp::endpoint const& ep, string_view u);
+			, tcp::endpoint const& ep, protocol_version v, string_view u);
 
 #if TORRENT_ABI_VERSION == 1
 		TORRENT_DEPRECATED static int const alert_type = 2;
@@ -187,8 +187,10 @@ TORRENT_VERSION_NAMESPACE_3
 
 	private:
 		aux::allocation_slot m_url_idx;
-#if TORRENT_ABI_VERSION == 1
 	public:
+		// the bittorrent protocol version that was announced
+		protocol_version version;
+#if TORRENT_ABI_VERSION == 1
 		// The tracker URL
 		TORRENT_DEPRECATED std::string url;
 #endif
@@ -578,9 +580,6 @@ TORRENT_VERSION_NAMESPACE_3
 		// contains the warning message from the tracker.
 		TORRENT_DEPRECATED std::string msg;
 #endif
-	public:
-		// the bittorrent protocol version that was announced
-		protocol_version version;
 	};
 
 	// This alert is generated when a scrape request succeeds.
@@ -613,10 +612,10 @@ TORRENT_VERSION_NAMESPACE_3
 		// internal
 		TORRENT_UNEXPORT scrape_failed_alert(aux::stack_allocator& alloc
 			, torrent_handle const& h, tcp::endpoint const& ep
-			, string_view u, protocol_version v, error_code const& e);
+			, protocol_version v, string_view u, error_code const& e);
 		TORRENT_UNEXPORT scrape_failed_alert(aux::stack_allocator& alloc
 			, torrent_handle const& h, tcp::endpoint const& ep
-			, string_view u, string_view m);
+			, protocol_version v, string_view u, string_view m);
 
 		TORRENT_DEFINE_ALERT_PRIO(scrape_failed_alert, 14, alert_priority::critical)
 
@@ -1925,7 +1924,7 @@ TORRENT_VERSION_NAMESPACE_3
 	{
 		// internal
 		TORRENT_UNEXPORT trackerid_alert(aux::stack_allocator& alloc, torrent_handle const& h
-			, tcp::endpoint const& ep , string_view u, const std::string& id);
+			, tcp::endpoint const& ep, protocol_version v, string_view u, const std::string& id);
 
 		TORRENT_DEFINE_ALERT(trackerid_alert, 61)
 
