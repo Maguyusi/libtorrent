@@ -7549,11 +7549,10 @@ namespace {
 			auto t = m_ses.find_torrent(info_hash_t(ih)).lock();
 			if (t && t != shared_from_this())
 			{
-				// TODO: if the existing torrent doesn't have metadata, insert
-				// the metadata we just downloaded into it.
-
-				set_error(errors::duplicate_torrent, torrent_status::error_file_metadata);
-				abort();
+				TORRENT_ASSERT(!t->valid_metadata());
+				t->set_error(errors::duplicate_torrent, torrent_status::error_file_metadata);
+				t->abort();
+				m_ses.remove_torrent_impl(t, {});
 			}
 		});
 
